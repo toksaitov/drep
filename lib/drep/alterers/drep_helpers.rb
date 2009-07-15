@@ -19,7 +19,7 @@
 class Object
   def message(message)
     if defined? @env.stdout
-      if not defined? @env.options.verbose or @env.options.verbose
+      if not defined? @env.options.quiet or !@env.options.quiet
         report(@env.stdout, message)
       end
     else
@@ -217,5 +217,13 @@ class String
     end
 
     return result
+  end
+
+  def quotate()
+    "'#{self}'"
+  end
+
+  def double_quotate()
+    "\"#{self}\""
   end
 end

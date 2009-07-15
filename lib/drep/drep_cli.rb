@@ -37,7 +37,7 @@ module DRep
 
     DREP_EXEC_OPTIONS =
       {:provider_flag =>
-         ['-p', '--provider PROVIDER[;SOURCE_1[,SOURCE_2]][;RULE_1[,RULE_2]]',
+         ['-p', '--provider PROVIDER[;SOURCE_1[,SOURCE_2]][;RULE_1[,RULE_2]][;OPTIONS]',
           'Provider path with sources and rules specifications.'],
        :template_flag =>
          ['-t', '--template PATH[>OUTPUT_PATH]',
@@ -116,8 +116,8 @@ module DRep
       result = true
 
       begin
-        add_parser_arg(:version_flag) { @options.tasks.show_version = true }
-        add_parser_arg(:help_flag)    { @options.tasks.show_help    = true }
+        add_parser_arg(:version_flag) { @options.show_version = true }
+        add_parser_arg(:help_flag)    { @options.show_help    = true }
 
         add_parser_arg(:verbose_flag) do
           @options.verbose = true if !@options.quiet
@@ -202,6 +202,7 @@ module DRep
           provider_path = parts[0]
           sources_list  = parts[1]
           rules_list    = parts[2]
+          options       = parts[3]
 
           unless provider_path.nil?
             provider_specs[:path] = provider_path
@@ -209,8 +210,9 @@ module DRep
             raise("Provider path is not specified")
           end
 
-          provider_specs[:sources] = [] + parse_args(sources_list)
-          provider_specs[:rules]   = [] + parse_args(rules_list)
+          provider_specs[:sources] = parse_args(sources_list)
+          provider_specs[:rules]   = parse_args(rules_list)
+          provider_specs[:options] = parse_args(options)
         end
 
         unless provider_specs.empty?

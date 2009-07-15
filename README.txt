@@ -17,6 +17,7 @@ data provider and generate a report by populating a specified template with the 
 === Extra Dependencies
 
 * nokogiri (version 1.3.2 or later)
+
 Required for the bundled example and most likely for the majority of custom data providers
 Use "--ignore- dependencies" Gem flag if you do not want to install this library alongside with the DRep
 

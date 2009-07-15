@@ -5,3 +5,6 @@ tmp
 *.log
 .test-result
 *.gem
+drep_most_provider.rb
+drep_most_rules.rb
+drep_most_template.rb

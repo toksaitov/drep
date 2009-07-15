@@ -30,8 +30,9 @@ Hoe.plugin :newgem
 # Run 'rake -T' to see list of generated tasks (from gem root directory)
 $hoe = Hoe.spec DRep::UNIX_NAME do
   self.developer DRep::AUTHOR, DRep::EMAIL
-  self.post_install_message = File.read('PostInstall.txt')
+  self.version = DRep::VERSION
 
+  self.post_install_message = File.read('PostInstall.txt')
   self.readme_file = 'README.txt'
 
   self.extra_deps     = [['nokogiri', '>= 1.3.2']]

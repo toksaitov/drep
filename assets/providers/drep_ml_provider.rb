@@ -5,8 +5,11 @@ module DRep
   
   class Task
     NAME        = 'DRep .*ML Parser'
-    VERSION     = '0.0.2'
     DESCRIPTION = 'Simple HTML/XML values extractor based on Nokogiri and Open-URI libs.'
+
+    VERSION     = '0.0.2'
+
+    PARAMETERS  = '1> Proxy URL'
 
     attr_reader :env
 
@@ -21,13 +24,13 @@ module DRep
     def run(specs)
       result = {}
 
-      sources, rules_list = specs[:sources], specs[:rules]
+      sources, rules_list, options = specs[:sources], specs[:rules], specs[:options]
 
       raise "Invalid sources list" unless sources.is_a?(Enumerable)
       raise "Invalid rules list"   unless rules_list.is_a?(Enumerable)
 
       sources.each do |source|
-        doc = load_doc(source)
+        doc = load_doc(source, options.first)
         valid doc do
           rules_list.each do |rules|
             temp_res = process_rules_sources(doc, rules)
@@ -40,12 +43,12 @@ module DRep
     end
 
     private
-    def load_doc(source)
+    def load_doc(source, proxy_url)
       result = nil
 
       begin
         msg("Processing source: #{source}")
-        open(source) do |html|
+        open(source, :proxy => proxy_url) do |html|
           result = Nokogiri::HTML(html.read, nil, html.charset)
         end
       rescue Exception => e

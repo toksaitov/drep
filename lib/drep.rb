@@ -29,7 +29,7 @@ module DRep
   UNIX_NAME = 'drep'
 
   # System version (rational version policy)
-  VERSION = '0.3.3'
+  VERSION = '0.3.4'
 
   # Full name of the author
   AUTHOR = 'Toksaitov Dmitrii Alexandrovich'
