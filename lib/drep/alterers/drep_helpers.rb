@@ -111,6 +111,10 @@ class Object
     return result
   end
   alias first_text first_valid_text
+
+  def try(method_name, *args, &block)
+    send(method_name, *args, &block) if respond_to?(method_name, true)
+  end
 end
 
 class Array

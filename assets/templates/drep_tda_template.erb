@@ -13,7 +13,7 @@
 [img]<%= first_valid(@main_cover, 'ToDo') %>[/img]
 
 <%# Other possible titles %>
-<% @all_alt_titles.each do |title| %>
+<% @all_alt_titles.try :each do |title| %>
 <%= title %>
 
 <% end %>
