@@ -46,7 +46,7 @@ module DRep
 
       @options = OpenStruct.new()
 
-      @options = arguments
+      @options.arguments = arguments
 
       @options.verbose = false
       @options.quiet   = false
@@ -102,7 +102,6 @@ module DRep
         unless @options.quiet
           @stdout.puts("Argument parsing failed, #{e.message}")
         end
-
         result = false
       end
 
@@ -123,10 +122,10 @@ module DRep
     end
 
     def perform_tasks()
-      if @tasks.show_version
+      if @options.tasks.show_version
         output_version(); exit(0)
       end
-      if @tasks.show_help
+      if @options.tasks.show_help
         output_help(); exit(0)
       end
     end

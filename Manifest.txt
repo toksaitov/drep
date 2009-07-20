@@ -1,3 +1,13 @@
+.idea/.rakeTasks
+.idea/drep.iml
+.idea/encodings.xml
+.idea/inspectionProfiles/Project_Default.xml
+.idea/inspectionProfiles/profiles_settings.xml
+.idea/misc.xml
+.idea/modules.xml
+.idea/projectCodeStyle.xml
+.idea/vcs.xml
+.idea/workspace.xml
 History.txt
 Manifest.txt
 PostInstall.txt
@@ -11,7 +21,9 @@ features/support/common.rb
 features/support/env.rb
 features/support/matchers.rb
 lib/drep.rb
-lib/drep/cli.rb
+lib/drep/alterers/drep_extenders.rb
+lib/drep/alterers/drep_validators.rb
+lib/drep/drep_cli.rb
 script/console
 script/console.cmd
 script/destroy

@@ -7,4 +7,4 @@ require 'rubygems'
 require File.expand_path(File.dirname(__FILE__) + '/../lib/drep')
 require 'drep/drep_cli'
 
-DRep::DrepCli.execute(STDIN, STDOUT, ARGV)
+DRep::EXEC.new(STDIN, STDOUT, ARGV).execute()

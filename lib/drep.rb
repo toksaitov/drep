@@ -1,6 +1,7 @@
 require File.dirname(__FILE__) + '/drep/alterers/drep_extenders'
 
 extend_load_paths __FILE__
+require 'drep/drep_cli'
 
 module DRep
   # Name of the system
@@ -23,4 +24,7 @@ module DRep
 
   # Copyright
   COPYRIGHT = "Copyright (C) 2009 #{AUTHOR}"
+
+  # Main CLI Loader
+  EXEC = DRepCli
 end
