@@ -22,7 +22,7 @@ module DRep
        :verbose_flag =>
          ['-V', '--verbose', 'Start in verbose mode (ignored in quiet mode).'],
        :new_task_flag =>
-         ['-t', '--task [source:connector, rules:file, template:file]', 'Add new report task.']}
+         ['-t', '--task [source:connector;rules:file;template:file]', 'Add new report task.']}
 
     attr_reader :stdin, :stdout, :arguments
 
@@ -82,8 +82,8 @@ module DRep
       result = true
 
       begin
-        add_parser_arg(:version_flag)  { @tasks.show_version = true }
-        add_parser_arg(:help_flag)     { @tasks.show_help    = true }
+        add_parser_arg(:version_flag)  { @options.tasks.show_version = true }
+        add_parser_arg(:help_flag)     { @options.tasks.show_help    = true }
 
         add_parser_arg(:verbose_flag) do
           @options.verbose = true if !@options.quiet
@@ -123,34 +123,50 @@ module DRep
 
     def perform_tasks()
       if @options.tasks.show_version
-        output_version(); exit(0)
+        output_version(); exit!(0)
       end
       if @options.tasks.show_help
-        output_help(); exit(0)
+        output_help(); exit!(0)
       end
     end
 
     def output_help()
-      @stdout.puts("Available options: \n\n")
       output_options()
     end
 
     def output_version()
-      @stdout.puts("Usage: #{UNIX_NAME} {[option] [parameter]}")
+      @stdout.puts("#{FULL_NAME} version #{VERSION}")
       @stdout.puts(COPYRIGHT)
     end
 
     def output_options()
-      @stdout.puts(@env.lang.exec_options_title) # ToDo lang
-
+      @stdout.puts("Available options: \n\n")
+      @stdout.puts("Usage: #{UNIX_NAME} {[option] [parameter]}")
+      
       DREP_EXEC_OPTIONS.each do |name, options|
         @stdout.puts("\n\t#{options[2]}\n\t\t#{options[0]}, #{options[1]}")
       end
     end
 
     def add_task(task_defenition)
-      puts(task_defenition)
+      if task_defenition.is_a?(String)
+        parts = task_defenition.split(';')
+
+        tasks_defs = []
+        valid_enum parts, :size => 3 do
+          parts.each do |part|
+            src = part.split(':')
+            valid_enum src, :size => 2 do
+              tasks_defs << {src[0].intern() => src[1]}
+            end
+          end
+        end
+
+        unless tasks_defs.empty?
+          @options.tasks.generate_reports += tasks_defs
+        end
+      end
     end
   end
-
+  
 end
