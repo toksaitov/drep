@@ -1,0 +1,10 @@
+#!/usr/bin/env ruby
+#
+#  Created on 2009-7-20.
+#  Copyright (c) 2009. All rights reserved.
+
+require 'rubygems'
+require File.expand_path(File.dirname(__FILE__) + '/../lib/drep')
+require 'drep/drep_cli'
+
+DRep::DrepCli.execute(STDIN, STDOUT, ARGV)
