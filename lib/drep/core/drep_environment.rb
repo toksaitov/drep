@@ -1,4 +1,5 @@
 extend_load_paths __FILE__
+require 'alterers/drep_helpers'
 require 'alterers/drep_validators'
 
 module DRep
@@ -21,25 +22,6 @@ module DRep
         @options = options
       else
         raise('Options were not specified')
-      end
-    end
-
-    def message(message)
-      if defined? @options.verbose and @options.verbose
-        report(@stdout, message)
-      end
-    end
-
-    def error(message)
-      if defined? @options.quiet and !@options.quiet
-        report(@stderr, message)
-      end
-    end
-
-    def report(ios, message) 
-      if ios.is_a?(IO) and
-           message.is_a?(String) then
-        ios.puts(message)
       end
     end
   end

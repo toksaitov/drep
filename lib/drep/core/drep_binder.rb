@@ -1,9 +1,12 @@
 extend_load_paths __FILE__
+require 'alterers/drep_helpers'
 require 'alterers/drep_validators'
 
 module DRep
 
   class DRepBinder
+    $KCODE = 'U'
+
     attr_reader :env
 
     attr_reader :__vars_data__
@@ -30,17 +33,17 @@ module DRep
               var_value = data_blob[mid]
               temp_data = var_value unless var_value.nil?
             else
-              @env.error('Invalid inner data blob format')
+              err('Invalid inner data blob format')
             end
           end
           valid temp_data do
             result = temp_data
           end
         else
-          @env.error('Invalid variables data format')
+          err('Invalid variables data format')
         end
       else
-        @env.error("Value binding failed. Invalid method call: #{mid}")
+        err("Value binding failed. Invalid method call: #{mid}")
       end
 
       return result
@@ -61,21 +64,21 @@ module DRep
               var_str_name = "@#{name.to_s()}"
               if var_str_name
                 if instance_variable_defined?(var_str_name)
-                  @env.error("Variables overlapping occurred in #{var_str_name}")
+                  err("Variables overlapping occurred in #{var_str_name}")
                 end
                 instance_variable_set(var_str_name.intern(), value)
               else
-                @env.error('Variable name is in incorrect format')
+                err('Variable name is in incorrect format')
               end
             end
 
           else
-            @env.error('Invalid inner data blob format')
+            err('Invalid inner data blob format')
           end
         end
 
       else
-        @env.error('Invalid variables data format')
+        err('Invalid variables data format')
       end
     end
   end

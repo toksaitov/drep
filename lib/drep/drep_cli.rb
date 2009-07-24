@@ -4,6 +4,7 @@ require 'ostruct'
 require 'date'
 
 extend_load_paths __FILE__
+require 'alterers/drep_helpers'
 require 'alterers/drep_validators'
 
 require 'core/interfaces/drep_runnable'
@@ -30,7 +31,9 @@ module DRep
        :quiet_flag =>
          ['-q', '--quiet', 'Start in quiet mode without any CLI messages.'],
        :verbose_flag =>
-         ['-V', '--verbose', 'Start in verbose mode (ignored in quiet mode).']}
+         ['-V', '--verbose', 'Start in verbose mode (ignored in quiet mode).'],
+       :debug_flag =>
+         ['-d', '--debug', 'Start in debug mode.']}
 
     attr_reader :env
 
@@ -57,6 +60,7 @@ module DRep
       
       @options.verbose = false
       @options.quiet   = false
+      @options.debug   = false
 
       @options.output = @stdout
 
@@ -74,17 +78,17 @@ module DRep
         begin
           if @options.verbose
             welcome_message = "#{FULL_NAME} has started"
-            @env.message("#{welcome_message}: #{DateTime.now}.")
+            msg("#{welcome_message}: #{DateTime.now}.")
           end
 
           perform_tasks()
 
           if @options.verbose
             end_message = "#{FULL_NAME} has finished all tasks"
-            @env.message("#{end_message}: #{DateTime.now}.")
+            msg("#{end_message}: #{DateTime.now}.")
           end
         rescue Exception => e
-          @env.error("Execution failed: #{e.message}")
+          err("Execution failed: #{e.message}")
         end
       end
     end
@@ -104,7 +108,10 @@ module DRep
           @options.quiet = true
           @options.verbose = false
         end
-
+        add_parser_arg(:debug_flag) do
+          @options.debug = true
+        end
+        
         add_parser_arg(:provider_flag) do |provider_def|
           add_provider(provider_def)
         end
@@ -115,7 +122,7 @@ module DRep
         parser.parse!(@options.arguments)
 
       rescue Exception => e
-        @env.error("Argument parsing failed: #{e.message}")
+        err("Argument parsing failed: #{e.message}")
         result = false
       end
 
@@ -145,7 +152,7 @@ module DRep
           args = [@env, @options.providers, @options.templates]
           DRepExecuter.new(*args).run()
         rescue Exception => e
-          @env.error("Report population failed: #{e.message}")
+          err("Report population failed: #{e.message}")
         end
       end
     end
@@ -155,16 +162,16 @@ module DRep
     end
 
     def output_version()
-      @env.message("#{FULL_NAME} version #{VERSION}")
-      @env.message(COPYRIGHT)
+      msg("#{FULL_NAME} version #{VERSION}")
+      msg(COPYRIGHT)
     end
 
     def output_options()
-      @env.message("Available options: \n\n")
-      @env.message("Usage: #{UNIX_NAME} {[option] [parameter]}")
+      msg("Available options: \n\n")
+      msg("Usage: #{UNIX_NAME} {[option] [parameter]}")
 
       DREP_EXEC_OPTIONS.each do |name, options|
-        @env.message("\n\t#{options[2]}\n\t\t#{options[0]}, #{options[1]}")
+        msg("\n\t#{options[2]}\n\t\t#{options[0]}, #{options[1]}")
       end
     end
 
