@@ -1,0 +1,74 @@
+<%# T. D. A. style template %>
+
+<%# Version: 0.0.1 %>
+<%# Date: 22.07.2009 %>
+<%# Type: BBCode %>
+<%# Language: russian / русский %>
+<%# Intended for: chinese pornographic animation releases on phpBB-like torrent sites %>
+
+<%# Title %>
+[font="Tahoma"][size=20][b]<%= @ru_title %> [color=gray]/[/color] <%= @alt_title %> [[color=<%= @year == Time.now.year ? "darkred" : "darkblue" %>]<%= @year %>[/color]][/b][/size][/font]
+
+<%# Cover %>
+[img]<%= @main_cover %>[/img]
+
+<%# Other possible titles %>
+<% @all_alt_titles.each do |title| %>
+<%= title %>
+<% end %>
+
+<%# General information %>
+<% valid(@country) do %>
+[b]Производство:[/b] <%= @country %>
+<% end %>
+
+<% valid(@genres) do %>
+[b]Жанр:[/b] <%= @genres.each_index { |i| @genres[i] + (i != @genres.size ? ', ' : '') } %>
+<% end %>
+
+<% valid(@type) do %>
+[b]Тип:[/b] <%= @type %>
+<% end %>
+
+<% valid(@air_period) do %>
+[b]Трансляция:[/b] <%= @air_period %>
+<% end %>
+
+<% valid(@air_time) do %>
+[b]Выпуск:[/b] <%# ToDo %>
+<% end %>
+
+<% valid(@director) do %>
+[b]Режиссёр:[/b] <%= @director %>
+<% end %>
+
+<% valid(@screenwriter) do %>
+[b]Сценарий:[/b] <%= @screenwriter %>
+<% end %>
+
+<% valid(@original_work, @original_work_name) do %>
+[b]<%= @original_work %>:[/b] <%= @original_work_name %>
+<% end %>
+
+<%# Studio logotype %>
+<% valid(@studio_logo) do %>
+[img]<%= @studio_logo %>[/img]
+<% end %>
+
+<%# Rating information %>
+Рейтинг на сайте [i]<%= @site_name %>[/i]:
+
+[tab][b]Средний балл:[/b] <%= first_valid(@raiting_avg_score, '---') %>
+[tab][b]Место в рейтинге:[/b] <%= first_valid(@raiting_pos, '---') %>
+[tab][b]Проголосовало:[/b] <%= first_valid(@votes_num, '---') %>
+
+[tab][size=10]Информация о рейтинге от [i]<%= Time.now.strftime('%d.%m.%Y') %>[/i][/size]
+[hr]
+
+<%# Content and|or review and|or comments and|or notes %>
+[quote]
+[b]<%= @info_title %>: [/b]
+[align=justify]<%= @brief_content %>[/align]
+[/quite]
+
+<%# ToDo %>

@@ -11,8 +11,11 @@
 History.txt
 Manifest.txt
 PostInstall.txt
-README.rdoc
 Rakefile
+Readme.rdoc
+assets/drep_ml_provider.rb
+assets/drep_tda_template.erb
+assets/drep_wa_rules.rb
 bin/drep
 config/website.yml.sample
 features/development.feature
@@ -23,6 +26,10 @@ features/support/matchers.rb
 lib/drep.rb
 lib/drep/alterers/drep_extenders.rb
 lib/drep/alterers/drep_validators.rb
+lib/drep/core/drep_binder.rb
+lib/drep/core/drep_environment.rb
+lib/drep/core/drep_executer.rb
+lib/drep/core/interfaces/drep_runnable.rb
 lib/drep/drep_cli.rb
 script/console
 script/console.cmd

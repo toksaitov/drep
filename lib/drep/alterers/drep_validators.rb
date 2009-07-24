@@ -8,11 +8,10 @@ class Object
   def valid?(item, *args, &block)
     result = item.nil? ? false : true
 
-    if result and !args.nil?
+    if result and args.is_a?(Enumerable)
       args.each do |obj|
         if obj.nil? or obj.is_a?(FalseClass)
-          result = false
-          break
+          result = false; break
         end
       end
     end
@@ -20,6 +19,68 @@ class Object
     if block_given?
       yield if result
     end
+
+    return result
+  end
+
+  def valid_string(item, *args, &block)
+    if valid_string?(item, *args)
+      yield if block_given?
+    end
+  end
+
+  def valid_string?(item, *args, &block)
+    if item.is_a?(String) and !item.strip().empty?
+      result = true
+    else
+      result = false
+    end
+
+    if result and args.is_a?(Enumerable)
+      args.each do |obj|
+        if obj.nil? or
+             !obj.is_a?(String) or
+              obj.strip().empty? then
+          result = false; break
+        end
+      end
+    end
+
+    if block_given?
+      yield if result
+    end
+
+    return result
+  end 
+
+  def valid_hash_args(*args, &block)
+    if valid_hash_args?(args)
+      yield if block_given?
+    end
+  end
+
+  def valid_hash_args?(*args, &block)
+    result = args.is_a?(Array) ? true : false
+
+    if result
+      args.each do |property|
+
+        if property.is_a?(Hash)
+          property.each do |name, value|
+            unless name.is_a?(Symbol) or
+                    name.is_a?(String) then
+              result = false
+            end
+          end
+        else
+          result = false
+        end
+
+        break unless result
+      end
+    end
+
+    yield if result and block_given?
 
     return result
   end
@@ -30,64 +91,9 @@ class Object
     unless result and args.nil?
       args.each do |obj|
         unless obj.nil?
-          result = item
-          break
+          result = item; break
         end
       end
-    end
-
-    return result
-  end
-
-  def valid_enum(item, *smth, &block)
-    if valid_enum?(item, *smth)
-      yield if block_given?
-    end
-  end
-
-  def valid_enum?(enum, *smth, &block)
-    result = enum.is_a?(Enumerable) ? true : false
-
-    if result
-      if smth.is_a?(Array)
-        smth.each do |property|
-          
-          if property.is_a?(Hash)
-            property.each do |name, value|
-
-              if name.is_a?(Symbol) or name.is_a?(String)
-                if value.is_a?(Array) and value.size == 2
-                  if enum.send(name, value[0]) != value[1]
-                    result = false
-                    break
-                  end
-                else
-                  if enum.send(name) != value
-                    result = false
-                    break
-                  end
-                end
-              end
-
-            end
-          end
-
-          break unless result
-        end
-      end
-
-      if result
-        enum.each do |obj|
-          if obj.nil?
-            result = false
-            break
-          end
-        end
-      end
-    end
-
-    if block_given?
-      yield if result
     end
 
     return result
