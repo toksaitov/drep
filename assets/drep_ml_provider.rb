@@ -108,17 +108,16 @@ module DRep
 
       if valid?(xpath, mldoc)
         search_res = mldoc.xpath(xpath)
-
         if str_proc.is_a?(Proc)
           search_res.each_with_index do |elem, i|
-            content = elem.content().to_s()
+            content = elem.to_html().gsub(/<.*?>/,'')
             valid str_proc.call(content, i) do
               result << content
             end
           end
         else
           search_res.each do |elem|
-            result << elem.content().to_s()
+            result << elem.to_html().gsub(/<.*?>/,'')
           end
         end
       end

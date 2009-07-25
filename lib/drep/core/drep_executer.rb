@@ -132,7 +132,7 @@ module DRep
         data_binding = DRepBinder.new(@env, vars)
 
         msg("Generating result")
-        erb_template = ERB.new(template_content, nil, '%<>>')
+        erb_template = ERB.new(template_content, nil, '%<>')
         result = erb_template.result(data_binding.get_binding())
       rescue Exception => e
         err("Report generation failed: #{e.message}")

@@ -5,7 +5,7 @@ require 'alterers/drep_validators'
 module DRep
 
   class DRepBinder
-    $KCODE = 'U'
+    # $KCODE = 'U'
 
     attr_reader :env
 
@@ -20,33 +20,6 @@ module DRep
 
       @__vars_data__ = vars_data
       inject_vars()
-    end
-    
-    def method_missing(mid, *args)
-      result = ''
-
-      if args.size == 0
-        if @__vars_data__.is_a?(Array)
-          temp_data = nil
-          @__vars_data__.each do |data_blob|
-            if data_blob.is_a?(Hash)
-              var_value = data_blob[mid]
-              temp_data = var_value unless var_value.nil?
-            else
-              err('Invalid inner data blob format')
-            end
-          end
-          valid temp_data do
-            result = temp_data
-          end
-        else
-          err('Invalid variables data format')
-        end
-      else
-        err("Value binding failed. Invalid method call: #{mid}")
-      end
-
-      return result
     end
 
     def get_binding()
@@ -80,6 +53,33 @@ module DRep
       else
         err('Invalid variables data format')
       end
+    end
+
+    def method_missing(mid, *args)
+      result = ''
+
+      if args.size == 0
+        if @__vars_data__.is_a?(Array)
+          temp_data = nil
+          @__vars_data__.each do |data_blob|
+            if data_blob.is_a?(Hash)
+              var_value = data_blob[mid]
+              temp_data = var_value unless var_value.nil?
+            else
+              err('Invalid inner data blob format')
+            end
+          end
+          valid temp_data do
+            result = temp_data
+          end
+        else
+          err('Invalid variables data format')
+        end
+      else
+        err("Value binding failed. Invalid method call: #{mid}")
+      end
+
+      return result
     end
   end
   
