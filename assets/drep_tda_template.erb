@@ -1,12 +1,12 @@
-<%# T. D. A. style template -%>
-<%# Version: 0.0.1 -%>
-<%# Date: 22.07.2009 -%>
-<%# Type: BBCode -%>
-<%# Language: russian -%>
-<%# Intended for: chinese pornographic animation releases on phpBB-like torrent sites -%>
-<%# --------------------------------------------------------------------------------- -%>
-<%# Title -%>
-[font="Tahoma"][size=20][b]<%= @ru_title %> [color=gray]/[/color] <%= @alt_title %> [[color=<%= @year == Time.now.year ? "darkred" : "darkblue" %>]<%= @year %>[/color]][/b][/size][/font]
+<%# T. D. A. style template %>
+<%# Version: 0.0.1 %>
+<%# Date: 22.07.2009 %>
+<%# Type: BBCode %>
+<%# Language: russian %>
+<%# Intended for: chinese pornographic animation releases on phpBB-like torrent sites %>
+<%# --------------------------------------------------------------------------------- %>
+<%# Title %>
+[font="Tahoma"][size=20][b]<%= @ru_title %> [color=gray]/[/color] <%= @alt_title %> [[color=<%= @year.to_i() == Time.now.year ? "darkred" : "darkblue" %>]<%= @year %>[/color]][/b][/size][/font]
 
 <%# Cover %>
 [img]<%= @main_cover %>[/img]
@@ -21,29 +21,30 @@
 <% valid(@country) do %>
 [b]Производство:[/b] <%= @country %>
 <% end %>
-
 <% valid(@genres) do %>
-[b]Жанр:[/b] <%= @genres.each_index { |i| @genres[i] + (i != @genres.size ? ', ' : '') } %>
+[b]Жанры:[/b] <%= @genres %>
 <% end %>
-
 <% valid(@type) do %>
 [b]Тип:[/b] <%= @type %>
 <% end %>
-
-<% valid(@air_period) do %>
-[b]Трансляция:[/b] <%= @air_period %>
+<% valid(@release_date) do %>
+[b]Премьера:[/b] <%= @release_date %>
 <% end %>
-
+<% valid(@air_period) do %>
+[b]Выпуск:[/b] <%= @air_period %>
+<% end %>
 <% valid(@air_time) do %>
-[b]Выпуск:[/b] <%# ToDo %>
+[b]Выпуск в:[/b] <%= @air_time %>
 <% end %>
 
 <% valid(@director) do %>
 [b]Режиссёр:[/b] <%= @director %>
 <% end %>
-
 <% valid(@screenwriter) do %>
 [b]Сценарий:[/b] <%= @screenwriter %>
+<% end %>
+<% valid(@original_work_author) do %>
+[b]Автор оригинала:[/b] <%= @original_work_author %>
 <% end %>
 
 <% valid(@original_work, @original_work_name) do %>
@@ -65,10 +66,25 @@
 [tab][size=10]Информация о рейтинге от [i]<%= Time.now.strftime('%d.%m.%Y') %>[/i][/size]
 [hr]
 
-<%# Content and|or review and|or comments and|or notes %>
+<%# Content and other stuff %>
 [quote]
-[b]<%= @info_title %>: [/b]
-[align=justify]<%= @brief_content %>[/align]
-[/quite]
+[b]Информация:[/b]
 
-<%# ToDo %>
+[align=justify]<%= first_valid(@brief_content, 'ToDo') %>[/align]
+<% valid(@logical_view_order) do %>
+[hr]
+[b]Порядок просмотра этой серии: [/b]
+
+<%= @logical_view_order.gsub(/(^#\d+)/, '[tab][b]\1[/b]') %>
+
+<% end %>
+[/quote]
+<%# Episodes %>
+<% valid(@episodes) do %>
+[hr]
+[spoiler="Эпизоды:"]
+
+<%= @episodes.gsub(/(^\d+[\d\s\[\]\(\)]*\.)/, '[tab][b]\1[/b]') %>
+
+[/spoiler]
+<% end %>

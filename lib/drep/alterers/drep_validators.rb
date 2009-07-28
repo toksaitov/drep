@@ -83,17 +83,15 @@ class Object
     yield if result and block_given?
 
     return result
-  end
+  end 
 
-  def first_valid(item, *args)
-    result = item
+  def matched?(str, pattern)
+    result = false
 
-    unless result and args.nil?
-      args.each do |obj|
-        unless obj.nil?
-          result = item; break
-        end
-      end
+    if str.is_a?(String) and pattern.is_a?(Regexp)
+      if pattern.match(str).to_s().size == str.size
+        result = true
+      end 
     end
 
     return result

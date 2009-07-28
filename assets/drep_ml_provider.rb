@@ -1,6 +1,8 @@
 require 'open-uri'
 require 'nokogiri'
 
+require 'iconv'
+
 module DRep
   
   class Task
@@ -9,8 +11,6 @@ module DRep
     DESCRIPTION = 'Simple HTML/XML values extractor based on Nokogiri and Open-URI libs.'
 
     AUTHOR      = 'Toksaitov Dmitriy Alexandrovich'
-
-    $KCODE = 'U'
 
     attr_reader :env
 
@@ -107,17 +107,15 @@ module DRep
       xpath, str_proc = rule[0], rule[1] if rule.is_a?(Array)
 
       if valid?(xpath, mldoc)
-        search_res = mldoc.xpath(xpath)
+        mldoc.xpath(xpath).each do |elem|
+          query_res = elem.to_html()
+          result << query_res unless query_res.nil?
+        end
         if str_proc.is_a?(Proc)
-          search_res.each_with_index do |elem, i|
-            content = elem.to_html().gsub(/<.*?>/,'')
-            valid str_proc.call(content, i) do
-              result << content
-            end
-          end
-        else
-          search_res.each do |elem|
-            result << elem.to_html().gsub(/<.*?>/,'')
+          begin
+            result = str_proc.call(result)
+          rescue Exception => e
+            err("Rule lambda execution failed: #{e.message}")
           end
         end
       end

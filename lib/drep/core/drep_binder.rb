@@ -5,8 +5,6 @@ require 'alterers/drep_validators'
 module DRep
 
   class DRepBinder
-    # $KCODE = 'U'
-
     attr_reader :env
 
     attr_reader :__vars_data__
@@ -35,7 +33,7 @@ module DRep
 
             data_blob.each do |name, value|
               var_str_name = "@#{name.to_s()}"
-              if var_str_name
+              unless var_str_name.nil?
                 if instance_variable_defined?(var_str_name)
                   err("Variables overlapping occurred in #{var_str_name}")
                 end
