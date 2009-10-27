@@ -66,7 +66,7 @@ The github web page is
 * http://github.com/tda/drep
 
 The public git clone URL is
-* git://github.com/tda/drep.git
+* http://github.com/tda/drep.git
 
 == Additional Information
 
