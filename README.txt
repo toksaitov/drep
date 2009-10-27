@@ -2,7 +2,7 @@
 
 == Description
 
-DRep is a simple data collector and report generator. It can collect data through a specific 
+DRep is a simple data collector and report generator. It can collect data through a specific
 data provider and generate a report by populating a specified template with the picked up data.
 
 == Features:
@@ -17,9 +17,8 @@ data provider and generate a report by populating a specified template with the 
 === Extra Dependencies
 
 * nokogiri (version 1.3.2 or later)
-
 Required for the bundled example and most likely for the majority of custom data providers
-Use +--ignore- dependencies+ Gem flag if you do not want to install this library alongside with the DRep
+Use "--ignore- dependencies" Gem flag if you do not want to install this library alongside with the DRep
 
 === Extra Development Dependencies
 

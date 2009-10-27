@@ -6,9 +6,7 @@ module DRep
 
     VERSION     = '0.0.1'
     VALID_DATE  = '23.07.2009'
-    DESCRIPTION = "Rules for WA's chinese pornographic animation section."
-
-    AUTHOR      = 'Toksaitov Dmitriy Alexandrovich'
+    DESCRIPTION = "Rules for WA section."
     
     WA_RULES =
     {
@@ -20,7 +18,7 @@ module DRep
       :alt_title =>
         [
           "//a[@class='estimation']/parent::font/parent::td/text()",
-          lambda { |strs| first_text(strs, /[a-z0-9\(\)\[\]{}\s]+/i) }
+          lambda { |strs| first_text(strs, /[a-z0-9\(\)\[\]{}\s:]+/i) }
         ],
       :year =>
         [
@@ -129,7 +127,7 @@ module DRep
       :all_general_info =>
         [
           "//a[@class='estimation']/parent::font",
-          lambda { |strs| first_text(strs).gsub('Выпуск в', 'Выпуск в:') }
+          lambda { |strs| first_text(strs).sub('Выпуск в', 'Выпуск в:') }
         ]
     }
 

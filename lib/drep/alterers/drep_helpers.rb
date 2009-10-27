@@ -1,3 +1,21 @@
+#    DRep - Modular Open Software Tester.
+#    Copyright (C) 2009  Dmitrii Toksaitov
+#
+#    This file is part of DRep.
+#
+#    DRep is free software: you can redistribute it and/or modify
+#    it under the terms of the GNU General Public License as published by
+#    the Free Software Foundation, either version 3 of the License, or
+#    (at your option) any later version.
+#
+#    DRep is distributed in the hope that it will be useful,
+#    but WITHOUT ANY WARRANTY; without even the implied warranty of
+#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#    GNU General Public License for more details.
+#
+#    You should have received a copy of the GNU General Public License
+#    along with DRep. If not, see <http://www.gnu.org/licenses/>.
+
 class Object
   def message(message)
     if defined? @env.stdout
@@ -34,7 +52,7 @@ class Object
     if list.is_a?(Array)
       list.each_index do |i|
         result += list[i].to_s()
-        result += ((i != list.size - 1) ? separator : '').to_s()
+        result += (i != list.size - 1) ? separator.to_s() : ''
       end
     end
 
@@ -55,11 +73,11 @@ class Object
     return result
   end
 
-  def first_valid_text(srts, *patterns)
+  def first_valid_text(strs, *patterns)
     result = nil
 
-    if srts.is_a?(Array)
-      srts.each do |str|
+    if strs.is_a?(Array)
+      strs.each do |str|
         if str.is_a?(String)
           temp_str = str
 
@@ -77,6 +95,7 @@ class Object
               end
             end
           end
+
         end
 
         break unless result.nil?

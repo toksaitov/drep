@@ -1,7 +1,6 @@
+Thank you for installing the DRep system
 
-For more information on drep, see http://drep.rubyforge.org
+Please be sure to read Readme.rdoc and History.rdoc
+for useful information about this release.
 
-NOTE: Change this information in PostInstall.txt 
-You can also delete it if you don't want it.
-
-
+For more information on DRep, see http:/85.17.184.9/drep

@@ -1,16 +1,12 @@
 require 'open-uri'
 require 'nokogiri'
 
-require 'iconv'
-
 module DRep
   
   class Task
     NAME        = 'DRep .*ML Parser'
     VERSION     = '0.0.2'
     DESCRIPTION = 'Simple HTML/XML values extractor based on Nokogiri and Open-URI libs.'
-
-    AUTHOR      = 'Toksaitov Dmitriy Alexandrovich'
 
     attr_reader :env
 
@@ -70,10 +66,10 @@ module DRep
           msg("Processing rules source: #{rules}")
           result = process_rules(mldoc, Rules.new(@env).get())
         else
-          err("Rules source were not defined in: #{rules}")
+          err("The source with rules was not defined in: #{rules}")
         end
       rescue Exception => e
-        err("Failed to process rules source: #{e.message}")
+        err("Failed to process source with rules: #{e.message}")
       end
 
       return result
@@ -87,7 +83,7 @@ module DRep
       rules.each do |var, rule|
         temp_res = extract_var(mldoc, rule)
 
-        if valid?(var, temp_res) and !temp_res.empty?
+        if valid?(var, temp_res) and not temp_res.empty?
           msg("Extracted #{var}: #{temp_res.inspect()}") if @env.options.debug
           result[var] = temp_res
         else
